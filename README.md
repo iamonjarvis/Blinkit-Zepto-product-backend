@@ -57,3 +57,7 @@ To deploy on a cloud server like Render:
 ## License
 This project is open-source under the MIT License.
 
+Preview
+![image](https://github.com/user-attachments/assets/a2844bab-eeba-45d8-9ae3-ba9c22fca8ef)
+
+
