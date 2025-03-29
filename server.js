@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = process.env.PORT || 3000; // Use Render's provided port
 
+const cors = require("cors");
+
+app.use(cors()); // Allow all origins
 
 app.use(bodyParser.json());
 app.use(express.static("public"));
@@ -13,7 +16,7 @@ app.use(express.static("public"));
 // Zepto scraper function
 async function scrapeZepto(product) {
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   const page = await browser.newPage();
@@ -51,7 +54,7 @@ async function scrapeZepto(product) {
 // Blinkit scraper function
 async function scrapeBlinkit(location, product) {
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   const page = await browser.newPage();
@@ -99,9 +102,7 @@ async function scrapeBlinkit(location, product) {
   // (Skipping the confirm button step as per your updated request)
 
   // 6. Click the search bar's animation wrapper to open the modal search.
-  const searchBarAnimationSelector = 'div.SearchBar__AnimationWrapper-sc-16lps2d-1.iJnYYS';
-  await page.waitForSelector(searchBarAnimationSelector, { timeout: 10000 });
-  await page.click(searchBarAnimationSelector);
+  await page.goto("https://blinkit.com/s/", { waitUntil: "networkidle2" });
   await waitFor(1500);
 
   // 7. Wait for the modal search input to appear, then type the product query.
